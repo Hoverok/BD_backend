@@ -46,5 +46,43 @@ programRouter.route('/')
             }, (err) => next(err))
             .catch((err) => next(err));
     });
+    
+    programRouter.route('/:programId')
+    .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+    .get((req, res, next) => {
+        Programs.findById(req.params.programId)
+            .populate('comments.author')
+            .then((program) => {
+                res.statusCode = 200;
+                res.setHeader('Content-Type', 'application/json');
+                res.json(program);
+            }, (err) => next(err))
+            .catch((err) => next(err));
+    })
+    .post(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+        res.statusCode = 403;
+        res.end('POST operation not supported on /programs/' + req.params.programId);
+    })
+    .put(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+        Programs.findByIdAndUpdate(req.params.programId, {
+            $set: req.body
+        }, { new: true })
+            .then((program) => {
+                res.statusCode = 200;
+                res.setHeader('Content-Type', 'application/json');
+                res.json(program);
+            }, (err) => next(err))
+            .catch((err) => next(err));
+    })
+    .delete(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+        Programs.findByIdAndRemove(req.params.programId)
+            .then((resp) => {
+                res.statusCode = 200;
+                res.setHeader('Content-Type', 'application/json');
+                res.json(resp);
+            }, (err) => next(err))
+            .catch((err) => next(err));
+    });
+    
 
 module.exports = programRouter;
