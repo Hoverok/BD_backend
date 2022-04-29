@@ -4,41 +4,41 @@ const mongoose = require('mongoose');
 var authenticate = require('../authenticate');
 const cors = require('./cors');
 
-const Patients = require('../models/patients');
+const Programs = require('../models/programs');
 
-const patientRouter = express.Router();
+const programRouter = express.Router();
 
-patientRouter.use(bodyParser.json());
+programRouter.use(bodyParser.json());
 
-patientRouter.route('/')
+programRouter.route('/')
     .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
     .get(cors.cors, (req, res, next) => {
-        Patients.find(req.query)
-            .populate('patients.author')
-            .then((patients) => {
+        Programs.find(req.query)
+            .populate('programs.author')
+            .then((programs) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
-                res.json(patients);
+                res.json(programs);
             }, (err) => next(err))
             .catch((err) => next(err));
     })
 
     .post(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
-        Patients.create(req.body)
-            .then((patient) => {
-                console.log('Patient Created ', patient);
+        Programs.create(req.body)
+            .then((program) => {
+                console.log('Program Created ', program);
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
-                res.json(patient);
+                res.json(program);
             }, (err) => next(err))
             .catch((err) => next(err));
     })
     .put(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
         res.statusCode = 403;
-        res.end('PUT operation not supported on /patients');
+        res.end('PUT operation not supported on /programs');
     })
     .delete(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
-        Patients.remove({})
+        Programs.remove({})
             .then((resp) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
@@ -47,4 +47,4 @@ patientRouter.route('/')
             .catch((err) => next(err));
     });
 
-module.exports = patientRouter;
+module.exports = programRouter;
