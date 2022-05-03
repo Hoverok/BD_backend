@@ -32,3 +32,11 @@ var patientSchema = new Schema({
 var Patients = mongoose.model('Patient', patientSchema);
 
 module.exports = Patients;
+
+// {
+//     "fullName": "John Jameson",
+//     "personalCode": "123456789",
+//     "address": "Vilnius gabijos g-vė",
+//     "telNum": "8654632135",
+//     "email": "email@email.com"
+// }

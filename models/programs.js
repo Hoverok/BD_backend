@@ -17,6 +17,10 @@ var programSchema = new Schema({
     author: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
+    },
+    patient: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Patient'
     }
 }, {
     timestamps: true
@@ -25,3 +29,6 @@ var programSchema = new Schema({
 var Programs = mongoose.model('Program', programSchema);
 
 module.exports = Programs;
+
+//6270e3cfeda0703bec60deb2
+//"personalCode": "123456789",

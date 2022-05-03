@@ -15,7 +15,6 @@ programRouter.route('/')
     .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
     .get(cors.cors, (req, res, next) => {
         Programs.find(req.query)
-            .populate('programs.author')
             .then((programs) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
@@ -27,6 +26,7 @@ programRouter.route('/')
     .post(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
         Programs.create(req.body)
             .then((program) => {
+                program.populate('patient')
                 console.log('Program Created ', program);
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
@@ -52,7 +52,6 @@ programRouter.route('/:programId')
     .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
     .get((req, res, next) => {
         Programs.findById(req.params.programId)
-            .populate('comments.author')
             .then((program) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');

@@ -15,7 +15,6 @@ patientRouter.route('/')
     .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
     .get(cors.cors, (req, res, next) => {
         Patients.find(req.query)
-            .populate('patients.author')
             .then((patients) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
@@ -52,7 +51,6 @@ patientRouter.route('/:patientId')
     .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
     .get((req, res, next) => {
         Patients.findById(req.params.patientId)
-            .populate('comments.author')
             .then((patient) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
