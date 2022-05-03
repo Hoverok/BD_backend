@@ -19,8 +19,10 @@ var leaderRouter = require('./routes/leaderRouter');
 const uploadRouter = require('./routes/uploadRouter');
 var favoriteRouter = require('./routes/favoriteRouter.js');
 var commentRouter = require('./routes/commentRouter');
+
 var programRouter = require('./routes/programRouter');
 var exerciseRouter = require('./routes/exerciseRouter');
+var patientRouter = require('./routes/patientRouter');
 
 const mongoose = require('mongoose');
 
@@ -66,8 +68,10 @@ app.use('/leaders', leaderRouter);
 app.use('/imageUpload', uploadRouter);
 app.use('/favorites', favoriteRouter);
 app.use('/comments',commentRouter);
+
 app.use('/programs',programRouter);
 app.use('/exercises', exerciseRouter);
+app.use('/patients', patientRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
