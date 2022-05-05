@@ -15,6 +15,8 @@ programRouter.route('/')
     .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
     .get(cors.cors, (req, res, next) => {
         Programs.find(req.query)
+            .populate('author')
+            .populate('patient')
             .then((programs) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
@@ -26,11 +28,15 @@ programRouter.route('/')
     .post(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
         Programs.create(req.body)
             .then((program) => {
-                program.populate('patient')
-                console.log('Program Created ', program);
-                res.statusCode = 200;
-                res.setHeader('Content-Type', 'application/json');
-                res.json(program);
+                Programs.findById(program._id)
+                    .populate('author')
+                    .populate('patient')
+                    .then((program) => {
+                        console.log('Program Created ', program);
+                        res.statusCode = 200;
+                        res.setHeader('Content-Type', 'application/json');
+                        res.json(program);
+                    })
             }, (err) => next(err))
             .catch((err) => next(err));
     })
@@ -52,6 +58,8 @@ programRouter.route('/:programId')
     .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
     .get((req, res, next) => {
         Programs.findById(req.params.programId)
+            .populate('author')
+            .populate('patient')
             .then((program) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
@@ -67,6 +75,8 @@ programRouter.route('/:programId')
         Programs.findByIdAndUpdate(req.params.programId, {
             $set: req.body
         }, { new: true })
+            .populate('author')
+            .populate('patient')
             .then((program) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
