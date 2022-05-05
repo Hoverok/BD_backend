@@ -15,6 +15,7 @@ exerciseRouter.route('/')
     .get(cors.cors, (req, res, next) => {
         Exercises.find(req.query)
             .populate('author')
+            .populate('exerciseType')
             .then((exercises) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
@@ -29,6 +30,7 @@ exerciseRouter.route('/')
                 .then((exercise) => {
                     Exercises.findById(exercise._id)
                         .populate('author')
+                        .populate('exerciseType')
                         .then((exercise) => {
                             res.statusCode = 200;
                             res.setHeader('Content-Type', 'application/json');
@@ -63,6 +65,7 @@ exerciseRouter.route('/:exerciseId')
     .get(cors.cors, (req, res, next) => {
         Exercises.findById(req.params.exerciseId)
             .populate('author')
+            .populate('exerciseType')
             .then((exercise) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
@@ -90,6 +93,7 @@ exerciseRouter.route('/:exerciseId')
                         .then((exercise) => {
                             Exercises.findById(exercise._id)
                                 .populate('author')
+                                .populate('exerciseType')
                                 .then((exercise) => {
                                     res.statusCode = 200;
                                     res.setHeader('Content-Type', 'application/json');

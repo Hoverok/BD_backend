@@ -1,23 +1,11 @@
 const mongoose = require('mongoose');
+const ExerciseTypes = require('./exerciseTypes');
 const Schema = mongoose.Schema;
 
 var exerciseSchema = new Schema({
-    name:  {
+    instuructions:  {
         type: String,
         required: true
-    },
-    ytLink:  {
-        type: String,
-        required: true
-    },
-    difficulty:  {
-        type: Number,
-        min: 1,
-        max: 5,
-        required: true
-    },
-    comment:  {
-        type: String
     },
     author: {
         type: mongoose.Schema.Types.ObjectId,
@@ -26,7 +14,12 @@ var exerciseSchema = new Schema({
     program: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Program'
+    },
+    exerciseType: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'ExerciseType'
     }
+
 }, {
     timestamps: true
 });
