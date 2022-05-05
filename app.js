@@ -23,12 +23,14 @@ var commentRouter = require('./routes/commentRouter');
 var programRouter = require('./routes/programRouter');
 var exerciseRouter = require('./routes/exerciseRouter');
 var patientRouter = require('./routes/patientRouter');
+var exerciseTypeRouter = require('./routes/exerciseTypeRouter');
 
 const mongoose = require('mongoose');
 
 const Dishes = require('./models/dishes');
 const Promotions = require('./models/promotions');
 const Leaders = require('./models/leaders');
+
 
 const url = config.mongoUrl;
 const connect = mongoose.connect(url);
@@ -72,6 +74,7 @@ app.use('/comments',commentRouter);
 app.use('/programs',programRouter);
 app.use('/exercises', exerciseRouter);
 app.use('/patients', patientRouter);
+app.use('/exercisetypes', exerciseTypeRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

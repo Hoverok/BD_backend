@@ -4,41 +4,40 @@ const mongoose = require('mongoose');
 var authenticate = require('../authenticate');
 const cors = require('./cors');
 
-const Patients = require('../models/patients');
-const Exercises = require('../models/exercises');
+const ExerciseTypes = require('../models/exerciseTypes');
 
-const patientRouter = express.Router();
+const exerciseTypeRouter = express.Router();
 
-patientRouter.use(bodyParser.json());
+exerciseTypeRouter.use(bodyParser.json());
 
-patientRouter.route('/')
+exerciseTypeRouter.route('/')
     .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
     .get(cors.cors, (req, res, next) => {
-        Patients.find(req.query)
-            .then((patients) => {
+        ExerciseTypes.find(req.query)
+            .then((exerciseTypes) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
-                res.json(patients);
+                res.json(exerciseTypes);
             }, (err) => next(err))
             .catch((err) => next(err));
     })
 
     .post(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
-        Patients.create(req.body)
-            .then((patient) => {
-                console.log('Patient Created ', patient);
+        ExerciseTypes.create(req.body)
+            .then((exerciseType) => {
+                console.log('ExerciseType Created ', exerciseType);
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
-                res.json(patient);
+                res.json(exerciseType);
             }, (err) => next(err))
             .catch((err) => next(err));
     })
     .put(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
         res.statusCode = 403;
-        res.end('PUT operation not supported on /patients');
+        res.end('PUT operation not supported on /exercisetypes');
     })
     .delete(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
-        Patients.remove({})
+        ExerciseTypes.remove({})
             .then((resp) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
@@ -47,34 +46,34 @@ patientRouter.route('/')
             .catch((err) => next(err));
     });
 
-patientRouter.route('/:patientId')
+exerciseTypeRouter.route('/:exerciseTypeId')
     .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
     .get((req, res, next) => {
-        Patients.findById(req.params.patientId)
-            .then((patient) => {
+        ExerciseTypes.findById(req.params.exerciseTypeId)
+            .then((exerciseType) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
-                res.json(patient);
+                res.json(exerciseType);
             }, (err) => next(err))
             .catch((err) => next(err));
     })
     .post(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
         res.statusCode = 403;
-        res.end('POST operation not supported on /patients/' + req.params.patientId);
+        res.end('POST operation not supported on /exercisetypes/' + req.params.exerciseTypeId);
     })
     .put(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
-        Patients.findByIdAndUpdate(req.params.patientId, {
+        ExerciseTypes.findByIdAndUpdate(req.params.exerciseTypeId, {
             $set: req.body
         }, { new: true })
-            .then((patient) => {
+            .then((exerciseType) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
-                res.json(patient);
+                res.json(exerciseType);
             }, (err) => next(err))
             .catch((err) => next(err));
     })
     .delete(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
-        Patients.findByIdAndRemove(req.params.patientId)
+        ExerciseTypes.findByIdAndRemove(req.params.exerciseTypeId)
             .then((resp) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
@@ -84,5 +83,4 @@ patientRouter.route('/:patientId')
     });
 
 
-
-module.exports = patientRouter;
+module.exports = exerciseTypeRouter;
