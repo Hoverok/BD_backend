@@ -82,6 +82,4 @@ messageRouter.route('/')
             .catch((err) => next(err));
     });
 
-
-
 module.exports = messageRouter;
