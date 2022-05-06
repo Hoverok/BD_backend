@@ -26,6 +26,7 @@ programRouter.route('/')
     })
 
     .post(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+        req.body.author = req.user._id; //req.user contains the info of logged in user
         Programs.create(req.body)
             .then((program) => {
                 Programs.findById(program._id)

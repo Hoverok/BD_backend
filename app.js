@@ -24,6 +24,7 @@ var programRouter = require('./routes/programRouter');
 var exerciseRouter = require('./routes/exerciseRouter');
 var patientRouter = require('./routes/patientRouter');
 var exerciseTypeRouter = require('./routes/exerciseTypeRouter');
+var messageRouter = require('./routes/messageRouter');
 
 const mongoose = require('mongoose');
 
@@ -75,6 +76,8 @@ app.use('/programs',programRouter);
 app.use('/exercises', exerciseRouter);
 app.use('/patients', patientRouter);
 app.use('/exercisetypes', exerciseTypeRouter);
+app.use('/messages', messageRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

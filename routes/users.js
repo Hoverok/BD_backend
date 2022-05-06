@@ -34,10 +34,14 @@ router.post('/signup', cors.corsWithOptions, (req, res, next) => {
         res.json({ err: err });
       }
       else {
-        if (req.body.firstname)
-          user.firstname = req.body.firstname;
-        if (req.body.lastname)
-          user.lastname = req.body.lastname;
+        if (req.body.stampNr)
+          user.stampNr = req.body.stampNr;
+        if (req.body.fullName)
+          user.fullName = req.body.fullName;
+        if (req.body.email)
+          user.email = req.body.email;
+        if (req.body.admin)
+          user.admin = req.body.admin;
         user.save((err, user) => {
           if (err) {
             res.statusCode = 500;
