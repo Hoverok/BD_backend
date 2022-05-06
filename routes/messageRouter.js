@@ -72,7 +72,7 @@ messageRouter.route('/')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
-    .delete(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+    .delete(cors.corsWithOptions, (req, res, next) => {
         Messages.findByIdAndRemove(req.params.messageId)
             .then((resp) => {
                 res.statusCode = 200;
