@@ -10,6 +10,14 @@ var programSchema = new Schema({
         type: String, //mby try Number in the future
         required: true
     },
+    requirements:  {
+        type: String, 
+        default: ''
+    },
+    programStatus:  {
+        type: String, 
+        default: ''
+    },
     author: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
