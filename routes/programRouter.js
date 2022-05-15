@@ -25,7 +25,7 @@ programRouter.route('/')
             .catch((err) => next(err));
     })
 
-    .post(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+    .post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
         req.body.author = req.user._id; //req.user contains the info of logged in user
         Programs.create(req.body)
             .then((program) => {
@@ -33,19 +33,18 @@ programRouter.route('/')
                     .populate('author')
                     .populate('patient')
                     .then((program) => {
-                        console.log('Program Created ', program);
-                        res.statusCode = 200;
+                        res.statusCode = 201;
                         res.setHeader('Content-Type', 'application/json');
                         res.json(program);
                     })
             }, (err) => next(err))
             .catch((err) => next(err));
     })
-    .put(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+    .put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
         res.statusCode = 403;
         res.end('PUT operation not supported on /programs');
     })
-    .delete(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+    .delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
         Programs.remove({})
             .then((resp) => {
                 res.statusCode = 200;
@@ -68,11 +67,11 @@ programRouter.route('/:programId')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
-    .post(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+    .post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
         res.statusCode = 403;
         res.end('POST operation not supported on /programs/' + req.params.programId);
     })
-    .put(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+    .put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
         Programs.findByIdAndUpdate(req.params.programId, {
             $set: req.body
         }, { new: true })
@@ -85,7 +84,7 @@ programRouter.route('/:programId')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
-    .delete(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+    .delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
         Exercises.findOne({ program: req.params.programId })
             .then((exercise) => {
                 if (exercise) {

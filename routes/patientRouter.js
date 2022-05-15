@@ -13,7 +13,7 @@ patientRouter.use(bodyParser.json());
 
 patientRouter.route('/')
     .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
-    .get(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+    .get(cors.cors, authenticate.verifyUser, (req, res, next) => {
         Patients.find(req.query)
             .then((patients) => {
                 res.statusCode = 200;

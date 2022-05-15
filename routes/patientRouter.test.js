@@ -17,6 +17,7 @@ describe('Fetching all the patients from DB', () => {
             .then((response) => {
                 expect(response.body).toEqual(expect.arrayContaining([
                     expect.objectContaining({
+                        _id: expect.any(String),
                         fullName: expect.any(String),
                         personalCode: expect.any(String),
                         address: expect.any(String),
@@ -64,7 +65,6 @@ describe('Fetch a patient by ID', () => {
             .expect('Content-Type', /json/)
             .expect(200)
             .then((response) => {
-                createdPatientId = response.body._id;
                 expect(response.body).toEqual(expect.objectContaining({
                     fullName: "tester",
                     personalCode: "123456789",
@@ -103,7 +103,7 @@ describe('Changing a patient in DB', () => {
     });
 });
 
-describe('Deleting an object from DB', () => {
+describe('Deleting a patient from DB', () => {
     it('DELETE /patients/:patientId --> returns a deleted patient object', () => {
         return request(app)
             .delete(`/patients/${createdPatientId}`)
@@ -111,7 +111,6 @@ describe('Deleting an object from DB', () => {
             .expect('Content-Type', /json/)
             .expect(200)
             .then((response) => {
-                createdPatientId = response.body._id;
                 expect(response.body).toEqual(expect.objectContaining({
                     fullName: "testerChanged",
                     personalCode: "123456789",
