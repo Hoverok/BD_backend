@@ -22,21 +22,20 @@ exerciseTypeRouter.route('/')
             .catch((err) => next(err));
     })
 
-    .post(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+    .post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
         ExerciseTypes.create(req.body)
             .then((exerciseType) => {
-                console.log('ExerciseType Created ', exerciseType);
-                res.statusCode = 200;
+                res.statusCode = 201;
                 res.setHeader('Content-Type', 'application/json');
                 res.json(exerciseType);
             }, (err) => next(err))
             .catch((err) => next(err));
     })
-    .put(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+    .put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
         res.statusCode = 403;
         res.end('PUT operation not supported on /exercisetypes');
     })
-    .delete(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+    .delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
         ExerciseTypes.remove({})
             .then((resp) => {
                 res.statusCode = 200;
@@ -57,11 +56,11 @@ exerciseTypeRouter.route('/:exerciseTypeId')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
-    .post(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+    .post(cors.corsWithOptions, authenticate.verifyUser,  (req, res, next) => {
         res.statusCode = 403;
         res.end('POST operation not supported on /exercisetypes/' + req.params.exerciseTypeId);
     })
-    .put(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+    .put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
         ExerciseTypes.findByIdAndUpdate(req.params.exerciseTypeId, {
             $set: req.body
         }, { new: true })
@@ -72,7 +71,7 @@ exerciseTypeRouter.route('/:exerciseTypeId')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
-    .delete(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+    .delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
         ExerciseTypes.findByIdAndRemove(req.params.exerciseTypeId)
             .then((resp) => {
                 res.statusCode = 200;

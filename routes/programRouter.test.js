@@ -197,8 +197,6 @@ describe('Automatically changing patient info in program', () => {
     });
 });
 
-
-
 describe('Deleting a program from DB', () => {
     it('DELETE /programs/:programId --> returns a deleted program object', () => {
         return request(app)

@@ -7,7 +7,7 @@ var userId = '6274e50c49937c20986352eb';
 var token = authenticate.getToken({ _id: userId });
 var createdPatientId = '';
 
-describe('Fetching all the patients from DB', () => {
+describe('Fetching all patients from DB', () => {
     it('GET /patients --> returns array of patient objects', () => {
         return request(app)
             .get('/patients')
