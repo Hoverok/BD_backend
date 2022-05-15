@@ -13,7 +13,7 @@ patientRouter.use(bodyParser.json());
 
 patientRouter.route('/')
     .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
-    .get(cors.cors, (req, res, next) => {
+    .get(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
         Patients.find(req.query)
             .then((patients) => {
                 res.statusCode = 200;
@@ -22,22 +22,22 @@ patientRouter.route('/')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
-
-    .post(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+// /authenticate.verifyUser, authenticate.verifyAdmin,
+    .post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
         Patients.create(req.body)
             .then((patient) => {
-                console.log('Patient Created ', patient);
-                res.statusCode = 200;
+                //console.log('Patient Created ', patient);
+                res.statusCode = 201;
                 res.setHeader('Content-Type', 'application/json');
                 res.json(patient);
             }, (err) => next(err))
             .catch((err) => next(err));
     })
-    .put(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+    .put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
         res.statusCode = 403;
         res.end('PUT operation not supported on /patients');
     })
-    .delete(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+    .delete(cors.corsWithOptions, authenticate.verifyUser,(req, res, next) => {
         Patients.remove({})
             .then((resp) => {
                 res.statusCode = 200;
@@ -48,7 +48,7 @@ patientRouter.route('/')
     });
 
 patientRouter.route('/:patientId')
-    .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+    .options(cors.corsWithOptions, authenticate.verifyUser, (req, res) => { res.sendStatus(200); })
     .get((req, res, next) => {
         Patients.findById(req.params.patientId)
             .then((patient) => {
@@ -58,11 +58,11 @@ patientRouter.route('/:patientId')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
-    .post(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+    .post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
         res.statusCode = 403;
         res.end('POST operation not supported on /patients/' + req.params.patientId);
     })
-    .put(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+    .put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
         Patients.findByIdAndUpdate(req.params.patientId, {
             $set: req.body
         }, { new: true })
@@ -73,7 +73,7 @@ patientRouter.route('/:patientId')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
-    .delete(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+    .delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
         Patients.findByIdAndRemove(req.params.patientId)
             .then((resp) => {
                 res.statusCode = 200;
