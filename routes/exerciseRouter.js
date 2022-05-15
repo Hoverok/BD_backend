@@ -23,7 +23,7 @@ exerciseRouter.route('/')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
-    .post(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+    .post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
         if (req.body != null) { 
             req.body.author = req.user._id; 
             Exercises.create(req.body)
@@ -32,7 +32,7 @@ exerciseRouter.route('/')
                         .populate('author')
                         .populate('exerciseType')
                         .then((exercise) => {
-                            res.statusCode = 200;
+                            res.statusCode = 201;
                             res.setHeader('Content-Type', 'application/json');
                             res.json(exercise);
                         })
@@ -50,7 +50,7 @@ exerciseRouter.route('/')
         res.statusCode = 403;
         res.end('PUT operation not supported on /exercises/');
     })
-    .delete(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+    .delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
         Exercises.remove({})
             .then((resp) => {
                 res.statusCode = 200;

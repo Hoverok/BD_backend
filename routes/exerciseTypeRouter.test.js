@@ -55,7 +55,7 @@ describe('Creating a new exercise type in DB', () => {
 });
 
 describe('Fetch an exercise type by ID', () => {
-    it('GET /exercisetypes/:exercisetypeId --> returns exerciset type object by ID', () => {
+    it('GET /exercisetypes/:exercisetypeId --> returns exercise type object by ID', () => {
         return request(app)
             .get(`/exercisetypes/${createdExerciseTypeId}`)
             .auth(token, { type: 'bearer' })
