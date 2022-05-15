@@ -13,7 +13,7 @@ patientRouter.use(bodyParser.json());
 
 patientRouter.route('/')
     .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
-    .get(cors.cors, authenticate.verifyUser, (req, res, next) => {
+    .get(cors.cors, (req, res, next) => {
         Patients.find(req.query)
             .then((patients) => {
                 res.statusCode = 200;
@@ -22,7 +22,7 @@ patientRouter.route('/')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
-// /authenticate.verifyUser, authenticate.verifyAdmin,
+    // /authenticate.verifyUser, authenticate.verifyAdmin,
     .post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
         Patients.create(req.body)
             .then((patient) => {
@@ -37,7 +37,7 @@ patientRouter.route('/')
         res.statusCode = 403;
         res.end('PUT operation not supported on /patients');
     })
-    .delete(cors.corsWithOptions, authenticate.verifyUser,(req, res, next) => {
+    .delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
         Patients.remove({})
             .then((resp) => {
                 res.statusCode = 200;
