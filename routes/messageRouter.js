@@ -25,8 +25,7 @@ messageRouter.route('/')
     .post(cors.corsWithOptions, (req, res, next) => {
         Messages.create(req.body)
             .then((message) => {
-                console.log('Message Created ', message);
-                res.statusCode = 200;
+                res.statusCode = 201;
                 res.setHeader('Content-Type', 'application/json');
                 res.json(message);
             }, (err) => next(err))
@@ -61,7 +60,7 @@ messageRouter.route('/')
         res.statusCode = 403;
         res.end('POST operation not supported on /messages/' + req.params.messageId);
     })
-    .put(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+    .put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
         Messages.findByIdAndUpdate(req.params.messageId, {
             $set: req.body
         }, { new: true })
