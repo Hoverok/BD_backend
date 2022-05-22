@@ -13,10 +13,6 @@ var programSchema = new Schema({
         type: String, 
         default: ''
     },
-    programStatus:  {
-        type: String, 
-        default: ''
-    },
     startDate: {
         type:Date
     },
