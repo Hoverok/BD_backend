@@ -7,8 +7,7 @@ var programSchema = new Schema({
         required: true
     },
     duration:  {
-        type: String, //mby try Number in the future
-        required: true
+        type: Number
     },
     requirements:  {
         type: String, 
@@ -18,6 +17,13 @@ var programSchema = new Schema({
         type: String, 
         default: ''
     },
+    startDate: {
+        type:Date
+    },
+    endDate: {
+        type:Date
+    },
+
     author: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
