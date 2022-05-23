@@ -6,6 +6,10 @@ var exerciseTypeSchema = new Schema({
         type: String,
         required: true
     },
+    bodyPart:  {
+        type: String,
+        required: true
+    },
     title:  {
         type: String,
         required: true

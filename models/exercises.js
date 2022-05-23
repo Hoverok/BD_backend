@@ -7,6 +7,15 @@ var exerciseSchema = new Schema({
         type: String,
         required: true
     },
+    sets:  {
+        type: String
+    },
+    reps:  {
+        type: String
+    },
+    restBreak:  {
+        type: String
+    },
     author: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'

@@ -2,24 +2,26 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 var programSchema = new Schema({
-    description:  {
+    description: {
         type: String,
         required: true
     },
-    duration:  {
+    duration: {
         type: Number
     },
-    requirements:  {
-        type: String, 
+    requirements: {
+        type: String,
         default: ''
     },
     startDate: {
-        type:Date
+        type: Date
     },
     endDate: {
-        type:Date
+        type: Date
     },
-
+    programCode: {
+        type: String,
+    },
     author: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
