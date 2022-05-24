@@ -52,11 +52,23 @@ router.post('/signup', cors.corsWithOptions, (req, res, next) => {
           passport.authenticate('local')(req, res, () => {
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
-            res.json({ success: true, status: 'Registration Successful!' });
+            res.json({ success: true, status: 'Registration Successful!', reUser: user });
           });
         });
       }
     });
+});
+
+router.delete('/:userId', cors.corsWithOptions, (req, res, next) => {
+
+  User.findByIdAndRemove(req.params.userId)
+    .then((resp) => {
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'application/json');
+      res.json(resp);
+    }, (err) => next(err))
+    .catch((err) => next(err));
+
 });
 
 //passport is responsible for authentication
