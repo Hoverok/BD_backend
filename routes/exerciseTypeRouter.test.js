@@ -19,6 +19,7 @@ describe('Fetching all exercise types from DB', () => {
                     expect.objectContaining({
                         _id: expect.any(String),
                         ytLink: expect.any(String),
+                        bodyPart: expect.any(String),
                         title: expect.any(String),
                         intensity: expect.any(Number),
                         inventory: expect.any(String),
@@ -38,6 +39,7 @@ describe('Creating a new exercise type in DB', () => {
             .expect(201)
             .send({
                 ytLink: "test nuoroda",
+                bodyPart: "liemuo/nugara",
                 title: "test title",
                 intensity: 5,
                 inventory: "test intventory"
@@ -46,6 +48,7 @@ describe('Creating a new exercise type in DB', () => {
                 createdExerciseTypeId = response.body._id;
                 expect(response.body).toEqual(expect.objectContaining({
                     ytLink: "test nuoroda",
+                    bodyPart: "liemuo/nugara",
                     title: "test title",
                     intensity: 5,
                     inventory: "test intventory"
@@ -64,6 +67,7 @@ describe('Fetch an exercise type by ID', () => {
             .then((response) => {
                 expect(response.body).toEqual(expect.objectContaining({
                     ytLink: "test nuoroda",
+                    bodyPart: "liemuo/nugara",
                     title: "test title",
                     intensity: 5,
                     inventory: "test intventory"
@@ -82,6 +86,7 @@ describe('Changing an exercise type in DB', () => {
             .expect(200)
             .send({
                 ytLink: "test nuoroda change",
+                bodyPart: "dubuo/šlaunis",
                 title: "test title change",
                 intensity: 2,
                 inventory: "test intventory change"
@@ -89,6 +94,7 @@ describe('Changing an exercise type in DB', () => {
             .then((response) => {
                 expect(response.body).toEqual(expect.objectContaining({
                     ytLink: "test nuoroda change",
+                    bodyPart: "dubuo/šlaunis",
                     title: "test title change",
                     intensity: 2,
                     inventory: "test intventory change"
@@ -107,6 +113,7 @@ describe('Deleting an exercise type from DB', () => {
             .then((response) => {
                 expect(response.body).toEqual(expect.objectContaining({
                     ytLink: "test nuoroda change",
+                    bodyPart: "dubuo/šlaunis",
                     title: "test title change",
                     intensity: 2,
                     inventory: "test intventory change"

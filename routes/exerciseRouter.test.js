@@ -6,8 +6,8 @@ const app = require('../app');
 var userId = '6274e50c49937c20986352eb';
 var token = authenticate.getToken({ _id: userId });
 var createdExerciseId = '';
-const exerciseTypeId = '628138efb898fc398805a871';
-const testProgramId = '6280f059b898fc398805a86f';
+const exerciseTypeId = '628a5618373d090e3c6b951f';
+const testProgramId = '628f3f4f26b2762304853a49';
 
 
 describe('Fetching all exercises from DB', () => {
@@ -22,7 +22,10 @@ describe('Fetching all exercises from DB', () => {
                     expect.objectContaining({
                         _id: expect.any(String),
                         program: expect.any(String),
-                        instuructions: expect.any(String)
+                        instuructions: expect.any(String),
+                        sets: expect.any(String),
+                        reps: expect.any(String),
+                        restBreak: expect.any(String),
                     })
                 ]))
             });
@@ -40,14 +43,19 @@ describe('Creating a new exercise in DB', () => {
             .send({
                 program: testProgramId,
                 exerciseType: exerciseTypeId,
-                instuructions: 'test instructions'
+                instuructions: 'test instructions',
+                sets: "3",
+                reps: "12",
+                restBreak: "45",
             })
             .then((response) => {
                 createdExerciseId = response.body._id;
                 expect(response.body).toEqual(expect.objectContaining({
-                    _id: expect.any(String),
                     program: testProgramId,
-                    instuructions: 'test instructions'
+                    instuructions: 'test instructions',
+                    sets: "3",
+                    reps: "12",
+                    restBreak: "45",
                 }))
             });
     });
@@ -64,7 +72,10 @@ describe('Fetch an exercise by ID', () => {
                 expect(response.body).toEqual(expect.objectContaining({
                     _id: expect.any(String),
                     program: testProgramId,
-                    instuructions: 'test instructions'
+                    instuructions: 'test instructions',
+                    sets: "3",
+                    reps: "12",
+                    restBreak: "45",
                 }))
             });
     });
@@ -81,16 +92,14 @@ describe('Automatically adding exercise type info to program exercise', () => {
             .then((response) => {
                 expect(response.body).toEqual(expect.objectContaining({
                     exerciseType: expect.objectContaining({
-                        _id: "628138efb898fc398805a871",
-                        ytLink: "https://www.youtube.com/watch?v=4t5gy-YX4Mg&list=PLcppEvy--xh3ttK_1f-DuxoBadNAFZAmY&index=1",
-                        title: "Klubakaulio sukimas",
-                        intensity: 3,
-                        inventory: "Nėra",
+                        _id: "628a5618373d090e3c6b951f",
+
                     }),
                 }))
             });
     });
 });
+
 
 
 describe('Changing an exercise in DB', () => {
@@ -101,13 +110,19 @@ describe('Changing an exercise in DB', () => {
             .expect('Content-Type', /json/)
             .expect(200)
             .send({
-                instuructions: 'test instructions changed'
+                instuructions: 'test instructions changed',
+                sets: "4",
+                reps: "10",
+                restBreak: "30",
             })
             .then((response) => {
                 expect(response.body).toEqual(expect.objectContaining({
                     _id: expect.any(String),
                     program: testProgramId,
-                    instuructions: 'test instructions changed'
+                    instuructions: 'test instructions changed',
+                    sets: "4",
+                    reps: "10",
+                    restBreak: "30",
                 }))
             });
     });
@@ -124,8 +139,10 @@ describe('Deleting an exercise type from DB', () => {
                 expect(response.body).toEqual(expect.objectContaining({
                     _id: expect.any(String),
                     program: testProgramId,
-                    exerciseType: exerciseTypeId,
-                    instuructions: 'test instructions changed'
+                    instuructions: 'test instructions changed',
+                    sets: "4",
+                    reps: "10",
+                    restBreak: "30",
                 }))
             });
     });

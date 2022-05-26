@@ -5,15 +5,13 @@ const authenticate = require('../authenticate');
 
 var userId = '6274e50c49937c20986352eb';
 var userIdChange = '6274e3842f1b4621783efc46';
-var patientId = '6280f037b898fc398805a86e';
-var patientIdChange = '628115a4b898fc398805a870';
+var patientId = '6284f5e3ee005b0a5c89375a';
+var patientIdChange = '6280f037b898fc398805a86e';
 var token = authenticate.getToken({ _id: userId });
 var createdProgramId = '';
 
 describe('Fetching all programs from DB', () => {
-    //jest.setTimeout(30000);
     it('GET /programs --> returns array of program objects', () => {
-        //jest.setTimeout(30000);
         return request(app)
             .get('/programs')
             .expect('Content-Type', /json/)
@@ -22,10 +20,12 @@ describe('Fetching all programs from DB', () => {
                 expect(response.body).toEqual(expect.arrayContaining([
                     expect.objectContaining({
                         _id: expect.any(String),
-                        programStatus: expect.any(String),
                         description: expect.any(String),
-                        duration: expect.any(String),
-                        requirements: expect.any(String)
+                        duration: expect.any(Number),
+                        requirements: expect.any(String),
+                        startDate: expect.any(String),
+                        endDate: expect.any(String),
+                        programCode: expect.any(String),
                     })
                 ]))
             });
@@ -40,21 +40,25 @@ describe('Creating a new program in DB', () => {
             .expect('Content-Type', /json/)
             .expect(201)
             .send({
-                programStatus: "Aktyvi",
                 description: "Test aprašymas",
-                duration: "6 sav",
+                duration: 7,
                 requirements: "Test įrankiai",
+                startDate: "2022-05-24T00:00:00.000Z",
+                endDate: "2022-06-01T00:00:00.000Z",
+                programCode: "344010122221",
                 patient: patientId
             })
             .then((response) => {
                 createdProgramId = response.body._id;
                 expect(response.body).toEqual(expect.objectContaining({
-                    programStatus: "Aktyvi",
                     description: "Test aprašymas",
-                    duration: "6 sav",
+                    duration: 7,
                     requirements: "Test įrankiai",
+                    startDate: "2022-05-24T00:00:00.000Z",
+                    endDate: "2022-06-01T00:00:00.000Z",
+                    programCode: "344010122221",
                     patient: expect.objectContaining({
-                        personalCode: '36908151111',
+                        personalCode: '34401012222',
                     }),
                 }))
             });
@@ -70,10 +74,15 @@ describe('Fetch a program by ID', () => {
             .expect(200)
             .then((response) => {
                 expect(response.body).toEqual(expect.objectContaining({
-                    programStatus: "Aktyvi",
                     description: "Test aprašymas",
-                    duration: "6 sav",
+                    duration: 7,
                     requirements: "Test įrankiai",
+                    startDate: "2022-05-24T00:00:00.000Z",
+                    endDate: "2022-06-01T00:00:00.000Z",
+                    programCode: "344010122221",
+                    patient: expect.objectContaining({
+                        personalCode: '34401012222',
+                    }),
                 }))
             });
     });
@@ -112,12 +121,12 @@ describe('Automatically adding patient info to program', () => {
             .then((response) => {
                 expect(response.body).toEqual(expect.objectContaining({
                     patient: expect.objectContaining({
-                        _id: "6280f037b898fc398805a86e",
-                        fullName: "Napoleon Bonaparte",
-                        personalCode: "36908151111",
-                        address: "Corsica 26-31",
-                        telNum: "+37067843111",
-                        email: "bonaparte@email.com",
+                        _id: "6284f5e3ee005b0a5c89375a",
+                        fullName: "Gaius Julius Caesar",
+                        personalCode: "34401012222",
+                        address: "Roma 22-22",
+                        telNum: "+37067843222",
+                        email: "caesar@email.com",
                     }),
                 }))
             });
@@ -132,17 +141,19 @@ describe('Changing a program in DB', () => {
             .expect('Content-Type', /json/)
             .expect(200)
             .send({
-                programStatus: "Baigta",
                 description: "Test aprašymas keistas",
-                duration: "66 sav",
+                duration: 9,
                 requirements: "Test įrankiai keisti",
+                startDate: "2022-05-25T00:00:00.000Z",
+                endDate: "2022-06-02T00:00:00.000Z",
             })
             .then((response) => {
                 expect(response.body).toEqual(expect.objectContaining({
-                    programStatus: "Baigta",
                     description: "Test aprašymas keistas",
-                    duration: "66 sav",
+                    duration: 9,
                     requirements: "Test įrankiai keisti",
+                    startDate: "2022-05-25T00:00:00.000Z",
+                    endDate: "2022-06-02T00:00:00.000Z",
                 }))
             });
     });
@@ -185,12 +196,12 @@ describe('Automatically changing patient info in program', () => {
             .then((response) => {
                 expect(response.body).toEqual(expect.objectContaining({
                     patient: expect.objectContaining({
-                        _id: "628115a4b898fc398805a870",
-                        fullName: "Gaius Julius Caesar",
-                        personalCode: "34401012222",
-                        address: "Roma 22-22",
-                        telNum: "+37067843222",
-                        email: "caesar@email.com",
+                        _id: "6280f037b898fc398805a86e",
+                        fullName: "Napoleon Bonaparte",
+                        personalCode: "36908151111",
+                        address: "Corsica 26-31",
+                        telNum: "+37067843111",
+                        email: "bonaparte@email.com",
                     }),
                 }))
             });
@@ -206,10 +217,11 @@ describe('Deleting a program from DB', () => {
             .expect(200)
             .then((response) => {
                 expect(response.body).toEqual(expect.objectContaining({
-                    programStatus: "Baigta",
                     description: "Test aprašymas keistas",
-                    duration: "66 sav",
+                    duration: 9,
                     requirements: "Test įrankiai keisti",
+                    startDate: "2022-05-25T00:00:00.000Z",
+                    endDate: "2022-06-02T00:00:00.000Z",
                 }))
             });
     });

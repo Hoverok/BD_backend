@@ -6,7 +6,7 @@ const app = require('../app');
 var userId = '6274e50c49937c20986352eb';
 var token = authenticate.getToken({ _id: userId });
 var createdMessageId = '';
-const programId = '6280f059b898fc398805a86f';
+const programId = '628a916420d77c219065f162';
 
 describe('Fetching all messages from DB', () => {
     it('GET /messages --> returns array of message objects', () => {
